@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
-import './index.css';
+import "./index.css";
+
+// 👉 Import Lightbox
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 const imageList = [
   "/images/Casetta-felice-1.jpg",
@@ -12,7 +16,6 @@ const imageList = [
   "/images/Casetta-felice-80.jpg",
   "/images/Casetta-felice-85.jpg",
   "/images/Casetta-felice-106.jpg",
-
 ];
 
 // 👉 Componente per lo sfondo
@@ -20,30 +23,33 @@ const BackgroundImage = () => (
   <div
     style={{
       backgroundImage: "url('/logoCasettaFelice.png')",
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      backgroundSize: 'cover',       // riempie tutto lo schermo su mobile
-      backgroundAttachment: 'scroll',// compatibile con Safari mobile
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      backgroundSize: "cover",       // riempie tutto lo schermo su mobile
+      backgroundAttachment: "scroll",// compatibile con Safari mobile
       opacity: 0.1,
-      position: 'fixed',
+      position: "fixed",
       top: 0,
       left: 0,
-      width: '100%',
-      height: '100%',
+      width: "100%",
+      height: "100%",
       zIndex: -1,
-      pointerEvents: 'none',
+      pointerEvents: "none",
     }}
   />
 );
 
-
 const App = () => {
+  // 👉 stato per aprire/chiudere il lightbox
+  const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: "relative" }}>
       <BackgroundImage />
 
       <header>
-        <div style={{ fontFamily: 'Brush Script MT' }}>
+        <div style={{ fontFamily: "Brush Script MT" }}>
           B&B Casetta Felice
         </div>
         <nav>
@@ -58,14 +64,19 @@ const App = () => {
         <div className="overlay">
           <div className="hero-content">
             <h1>Benvenuti a Casetta Felice</h1>
-            <a href="#contact" className="btn-primary" style={{ borderRadius: '2rem' }}>Prenota ora</a>
+            <a href="#contact" className="btn-primary" style={{ borderRadius: "2rem" }}>
+              Prenota ora
+            </a>
           </div>
         </div>
       </section>
 
       <div className="container">
-        <h2 style={{ fontFamily: 'Brush Script MT' }}>La nostra struttura</h2>
-        <p className="description" style={{ fontFamily: 'Pompiere, sans-serif', fontWeight: '400', fontStyle: 'normal' }}>
+        <h2 style={{ fontFamily: "Brush Script MT" }}>La nostra struttura</h2>
+        <p
+          className="description"
+          style={{ fontFamily: "Pompiere, sans-serif", fontWeight: "400", fontStyle: "normal" }}
+        >
           Benvenuti a Casetta Felice<br />
           Nel cuore di Rocca di Neto, lungo il corso principale del paese, Casetta Felice è una casa recentemente ristrutturata pensata per offrire comfort e tranquillità.<br /><br />
           L’appartamento, disponibile in esclusiva per gli ospiti, dispone di due camere da letto (una matrimoniale e una doppia), un’ampia cucina con soggiorno e un bagno. Gli ambienti sono spaziosi e curati, ideali per soggiorni in famiglia o tra amici.<br /><br />
@@ -74,19 +85,32 @@ const App = () => {
           Siamo felici di aprire le porte della nostra casa e ci fa piacere sapere che i suoi spazi continuano a vivere attraverso le storie di chi li abita, anche solo per qualche giorno.
         </p>
 
-        <h2 style={{ fontFamily: 'Brush Script MT' }} id="gallery">Galleria fotografica</h2>
+        <h2 style={{ fontFamily: "Brush Script MT" }} id="gallery">Galleria fotografica</h2>
         <div className="gallery">
-          {imageList.map((src, index) => (
+          {imageList.map((src, i) => (
             <img
-              key={index}
+              key={i}
               src={src}
-              alt={`Casetta Felice ${index + 1}`}
+              alt={`Casetta Felice ${i + 1}`}
               loading="lazy"
+              onClick={() => {
+                setIndex(i);
+                setOpen(true);
+              }}
+              style={{ cursor: "pointer" }}
             />
           ))}
         </div>
 
-        <h2 style={{ fontFamily: 'Brush Script MT' }} id="map">Dove siamo</h2>
+        {/* 👉 Lightbox */}
+        <Lightbox
+          open={open}
+          index={index}
+          close={() => setOpen(false)}
+          slides={imageList.map((src) => ({ src }))}
+        />
+
+        <h2 style={{ fontFamily: "Brush Script MT" }} id="map">Dove siamo</h2>
         <div className="map">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1675.556516735604!2d17.008442080767825!3d39.184459713039494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1340449da370c8af%3A0x458baf58643f6dfc!2sViale%20Aldo%20Moro%2C%20122%2C%2088821%20Rocca%20di%20Neto%20KR!5e0!3m2!1sen!2sit!4v1751722370151!5m2!1sen!2sit"
@@ -100,7 +124,7 @@ const App = () => {
           ></iframe>
         </div>
 
-        <h2 style={{ fontFamily: 'Brush Script MT' }} id="contact">Contatti</h2>
+        <h2 style={{ fontFamily: "Brush Script MT" }} id="contact">Contatti</h2>
         <form action="#" method="post">
           <input type="text" name="name" placeholder="Il tuo nome" required />
           <input type="email" name="email" placeholder="La tua email" required />
@@ -109,7 +133,7 @@ const App = () => {
         </form>
       </div>
 
-      <footer style={{ fontFamily: 'Brush Script MT' }}>
+      <footer style={{ fontFamily: "Brush Script MT" }}>
         <div>© 2025 B&B Casetta Felice - Tutti i diritti riservati</div>
         <div style={{ marginTop: "10px" }}>
           <i>
