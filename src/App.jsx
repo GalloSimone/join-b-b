@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./App.css";
 import "./index.css";
 
-// 👉 Import Lightbox
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
@@ -18,15 +17,15 @@ const imageList = [
   "/images/Casetta-felice-106.jpg",
 ];
 
-// 👉 Componente per lo sfondo
+
 const BackgroundImage = () => (
   <div
     style={{
       backgroundImage: "url('/logoCasettaFelice.png')",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
-      backgroundSize: "cover",       // riempie tutto lo schermo su mobile
-      backgroundAttachment: "scroll",// compatibile con Safari mobile
+      backgroundSize: "cover",       
+      backgroundAttachment: "scroll",
       opacity: 0.1,
       position: "fixed",
       top: 0,
@@ -40,7 +39,6 @@ const BackgroundImage = () => (
 );
 
 const App = () => {
-  // 👉 stato per aprire/chiudere il lightbox
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -49,7 +47,7 @@ const App = () => {
       <BackgroundImage />
 
       <header>
-        <div style={{ fontFamily: "Brush Script MT" }}>
+        <div style={{ fontFamily: " Libertinus Sans,sans-serif" }}>
           B&B Casetta Felice
         </div>
         <nav>
@@ -102,7 +100,7 @@ const App = () => {
           ))}
         </div>
 
-        {/* 👉 Lightbox */}
+      
         <Lightbox
           open={open}
           index={index}
